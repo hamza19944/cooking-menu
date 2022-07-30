@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import Body from "./components/Body";
+import Footer from "./components/Footer";
+import axios from "axios"
+import { useEffect, useState } from "react";
 
 function App() {
+  const URL = "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood"
+  const [newData, setNewData] = useState([])
+  useEffect(() => {
+    axios.get(URL)
+    .then(res => {
+      setNewData(res.data.meals)
+    }).catch(err => {
+      if (err) {
+        console.log(err);
+      }
+    })
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Body mealData={newData}/>
+      <Footer/>
     </div>
   );
 }
